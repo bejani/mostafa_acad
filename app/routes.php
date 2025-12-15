@@ -46,7 +46,7 @@ use App\Action\Teacher\Questions\DeleteAction as TeacherQuestionDeleteAction;
  * ===================== */
 use App\Action\Student\DashboardAction as StudentDashboardAction;
 
-$router = new Router();
+// Router instance is created in public/index.php and injected here when this file is required.
 
 /* =====================
  * Auth
