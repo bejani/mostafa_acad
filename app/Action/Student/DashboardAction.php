@@ -20,7 +20,7 @@ class DashboardAction
         $resultCount  = (new AttemptRepository())->countByUser($studentId);
 
         return View::render("student/dashboard.php", [
-            'title'        => 'داشبورد هنرجو',
+            'title'        => 'داشبورد دانش آموز',
             'user'         => $user,
             'quizCount'    => $quizCount,
             'resultCount'  => $resultCount,

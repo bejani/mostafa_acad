@@ -6,6 +6,7 @@ use App\Core\View;
 use App\Core\Auth;
 use App\Domain\QuizRepository;
 use App\Domain\QuizUserLimitRepository;
+use App\Domain\UserSubjectRepository;
 
 class TeacherEnableRetakeAction
 {
@@ -19,8 +20,9 @@ class TeacherEnableRetakeAction
         $userId    = (int)($_GET['user_id'] ?? 0);
         $teacherId = (int) Auth::user()['id'];
 
+        $subjects = (new UserSubjectRepository())->subjectsForUser($teacherId);
         $quizRepo = new QuizRepository();
-        if (!$quizRepo->isOwnedBy($quizId, $teacherId)) {
+        if (!$quizRepo->isInSubjects($quizId, $subjects)) {
             exit('دسترسی غیرمجاز');
         }
 

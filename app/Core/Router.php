@@ -13,7 +13,7 @@ class Router
 
     public function __construct(string $rawRoute)
     {
-        // مسیر نهایی (ممکن است شامل query string باشد) که index.php آن را ارسال کرده
+        // Save the raw route (may include query string) passed from index.php
         $this->rawRoute = $rawRoute;
     }
 
@@ -31,14 +31,16 @@ class Router
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
-        // مسیر فقط باید PATH باشد، بدون Query String
-        $uri = parse_url($this->rawRoute, PHP_URL_PATH);
+        // Extract path (without query) and ensure it starts with '/'
+        $uri = parse_url($this->rawRoute, PHP_URL_PATH) ?? '';
+        if ($uri === '' || $uri[0] !== '/') {
+            $uri = '/' . ltrim($uri, '/');
+        }
 
-        // اگر query string وجود دارد، آن را به صورت پارامترها استخراج و در $_GET قرار می‌دهیم
+        // Parse query string and merge into $_GET without overwriting existing keys
         $query = parse_url($this->rawRoute, PHP_URL_QUERY);
         if ($query) {
             parse_str($query, $params);
-            // فقط مقادیر جدید را اضافه کن، مقادیر قبلی $_GET را بازنویسی نکن
             foreach ($params as $k => $v) {
                 if (!array_key_exists($k, $_GET)) {
                     $_GET[$k] = $v;
@@ -46,16 +48,13 @@ class Router
             }
         }
 
-        // اگر مسیر پیدا نشد
         if (!array_key_exists($uri, $this->routes[$method])) {
             http_response_code(404);
-            echo "404: route not found → $uri";
+            echo "404: route not found for $uri";
             return;
         }
 
         $handler = $this->routes[$method][$uri];
-
-        // Prepare parameters to pass to handler: take from $_GET only
         $params = $_GET;
 
         // If handler is a class name string, instantiate it
@@ -63,7 +62,7 @@ class Router
             $handler = new $handler;
         }
 
-        // If handler is an object with __invoke, call it; if it's a callable function/closure, call it.
+        // If handler is an object with __invoke, call it
         if (is_object($handler) && method_exists($handler, '__invoke')) {
             $ref = new \ReflectionMethod($handler, '__invoke');
             if ($ref->getNumberOfParameters() > 0) {
@@ -72,6 +71,7 @@ class Router
             return $handler();
         }
 
+        // If handler is a callable function/closure
         if (is_callable($handler)) {
             $ref = new \ReflectionFunction(\Closure::fromCallable($handler));
             if ($ref->getNumberOfParameters() > 0) {
@@ -80,14 +80,9 @@ class Router
             return $handler();
         }
 
-        // Fallback: try to call as callable without params
-        if (is_callable($handler)) {
-            return $handler();
-        }
-
         // Not callable
         http_response_code(500);
-        echo "500: route handler not callable for → $uri";
+        echo "500: route handler not callable for $uri";
         return;
     }
 }

@@ -63,4 +63,18 @@ class SubjectRepository
         $stmt = $this->db->prepare("DELETE FROM subjects WHERE id = ?");
         $stmt->execute([$id]);
     }
+
+    public function findByIds(array $ids): array
+    {
+        $ids = array_values(array_filter(array_map('intval', $ids), fn($i) => $i > 0));
+        if (empty($ids)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $stmt = $this->db->prepare("SELECT * FROM subjects WHERE id IN ($placeholders) AND is_active = 1 ORDER BY title");
+        $stmt->execute($ids);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

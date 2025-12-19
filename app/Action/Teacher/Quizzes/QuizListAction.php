@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Action\Teacher\Quiz;
+namespace App\Action\Teacher\Quizzes;
 
 use App\Core\Auth;
 use App\Core\View;
 use App\Domain\QuizRepository;
 use App\Domain\QuestionRepository;
+use App\Domain\UserSubjectRepository;
 
 class QuizListAction
 {
@@ -17,7 +18,8 @@ class QuizListAction
         }
 
         $repo = new QuizRepository();
-        $quizzes = $repo->all();
+        $subjectIds = (new UserSubjectRepository())->subjectsForUser((int)Auth::id());
+        $quizzes = $repo->findBySubjectIds($subjectIds);
         $qRepo = new QuestionRepository();
 
         foreach ($quizzes as &$q) {
@@ -25,8 +27,9 @@ class QuizListAction
         }
         unset($q);
 
-        return View::render('teacher/quizzes/list.php', [
-            'quizzes' => $quizzes
-        ]);
+        return View::render('teacher/quizzes.php', [
+            'quizzes' => $quizzes,
+            'user'    => Auth::user()
+        ], 'teacher');
     }
 }

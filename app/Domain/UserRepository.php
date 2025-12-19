@@ -39,7 +39,8 @@ class UserRepository
             INSERT INTO users (name, username, password_hash, role, is_active)
             VALUES (:name, :username, :password_hash, :role, :is_active)
         ");
-        return $stmt->execute($data);
+        $stmt->execute($data);
+        return (int)$this->db->lastInsertId();
     }
     public function findById($id)
     {
@@ -79,5 +80,19 @@ class UserRepository
 
         $stmt = $this->db->prepare("UPDATE users SET is_active=? WHERE id=?");
         $stmt->execute([$newStatus, $id]);
+    }
+
+    public function findByIds(array $ids): array
+    {
+        $ids = array_values(array_filter(array_map('intval', $ids), fn($i) => $i > 0));
+        if (empty($ids)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id IN ($placeholders) ORDER BY name");
+        $stmt->execute($ids);
+
+        return $stmt->fetchAll();
     }
 }

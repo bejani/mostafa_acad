@@ -26,7 +26,7 @@ class QuizSubmitAction
         $attemptRepo   = new AttemptRepository();
         $questionRepo  = new QuestionRepository();
 
-        // کلید سشن حاوی ID سوالاتی که این هنرجو برای این آزمون دیده است
+        // کلید سشن حاوی ID سوالاتی که این دانش آموز برای این آزمون دیده است
         $sessionKey = "quiz_{$quizId}_user_{$userId}_questions";
 
         if (!isset($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {

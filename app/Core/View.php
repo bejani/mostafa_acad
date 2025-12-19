@@ -4,10 +4,8 @@ namespace App\Core;
 
 class View
 {
-    /**
-     * رندر صفحه با لی‌اوت
-     */
-    public static function render(string $template, array $data = [], ?string $layout = 'admin')
+
+    public static function render(string $template, array $data = [], ?string $layout = 'auto')
     {
         $templateFile = __DIR__ . '/../Template/' . $template;
 
@@ -21,6 +19,18 @@ class View
         ob_start();
         require $templateFile;
         $content = ob_get_clean();
+
+        if ($layout === 'auto') {
+            if (strpos($template, 'teacher/') === 0) {
+                $layout = 'teacher';
+            } elseif (strpos($template, 'student/') === 0) {
+                $layout = 'student';
+            } elseif (strpos($template, 'auth/') === 0) {
+                $layout = 'login';
+            } else {
+                $layout = 'admin';
+            }
+        }
 
         if ($layout === null) {
             return $content;
@@ -50,14 +60,14 @@ class View
 
         // اگر route دارای query بود
         if (strpos($route, '?') !== false) {
-            [$path, $extraQuery] = explode('?', $route, 2); // جدا کردن مسیر از query
+            [$path, $extraQuery] = explode('?', $route, 2);
             $path = '/' . ltrim($path, '/');
         } else {
             $path = '/' . $path;
         }
 
         // تشخیص مسیر اصلی پروژه (برای لوکال و سرور)
-        $scriptName = $_SERVER['SCRIPT_NAME']; // مثلا /tvto_portal/public/index.php
+        $scriptName = $_SERVER['SCRIPT_NAME'];
         $basePath = str_replace('/index.php', '', $scriptName);
 
         // ساخت URL پایه

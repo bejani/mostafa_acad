@@ -6,6 +6,7 @@ use App\Core\View;
 use App\Core\Auth;
 use App\Domain\QuizRepository;
 use App\Domain\AttemptRepository;
+use App\Domain\UserSubjectRepository;
 
 class TeacherResultAttemptsAction
 {
@@ -20,8 +21,9 @@ class TeacherResultAttemptsAction
         $teacherId = (int) Auth::user()['id'];
 
         $quizRepo = new QuizRepository();
-        if (!$quizRepo->isOwnedBy($quizId, $teacherId)) {
-            exit('دسترسی غیرمجاز');
+        $subjects = (new UserSubjectRepository())->subjectsForUser($teacherId);
+        if (!$quizRepo->isInSubjects($quizId, $subjects)) {
+            exit('دسترسی غیرمجاز به این آزمون.');
         }
 
         $attemptRepo = new AttemptRepository();
@@ -30,6 +32,6 @@ class TeacherResultAttemptsAction
             'user'     => Auth::user(),
             'quiz'     => $quizRepo->find($quizId) ?? null,
             'attempts' => $attemptRepo->getAttemptsForUserQuiz($quizId, $userId),
-        ]);
+        ], 'teacher');
     }
 }

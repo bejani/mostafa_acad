@@ -12,7 +12,7 @@ $u = Auth::user();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?= $title ?? "پنل مدیریت" ?></title>
+    <title><?= $title ?? "پنل مدیر" ?></title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -67,19 +67,20 @@ $u = Auth::user();
 
 <body>
 
-    <!-- 🔷 هدر مشترک پنل مدیریت -->
+    <!-- منوی بالای پنل مدیر -->
     <div class="top-menu d-flex justify-content-between align-items-center text-white">
 
         <div class="d-flex align-items-center">
-            <a href="<?= View::baseUrl('/admin/dashboard') ?>" class="btn btn-sm btn-info me-3">🏠 داشبورد</a>
-            <strong style="font-size: 18px;">🌐 پنل مدیریت</strong>
+            <a href="<?= View::baseUrl('/admin/dashboard') ?>" class="btn btn-sm btn-info me-3">بازگشت داشبورد</a>
+            <strong style="font-size: 18px;">سامانه مدیر</strong>
         </div>
 
         <div class="d-flex align-items-center">
-            <a href="<?= View::baseUrl('/admin/subjects') ?>">مدیریت درسها</a>
+            <a href="<?= View::baseUrl('/admin/subjects') ?>">مدیریت درس‌ها</a>
             <a href="<?= View::baseUrl('/admin/quizzes') ?>">مدیریت آزمون‌ها</a>
             <a href="<?= View::baseUrl('/admin/users') ?>">مدیریت کاربران</a>
-            <a href="<?= View::baseUrl('/admin/backup') ?>">بک‌آپ</a>
+            <a href="<?= View::baseUrl('/admin/results') ?>">نتایج</a>
+            <a href="<?= View::baseUrl('/admin/backup') ?>">پشتیبان‌گیری</a>
 
 
             <span class="ms-3 text-warning fw-bold">
@@ -92,7 +93,7 @@ $u = Auth::user();
     </div>
 
 
-    <!-- 📌 محتوای صفحه‌ها -->
+    <!-- محتوای داخلی -->
     <div class="container admin-content">
         <?= $content ?>
     </div>

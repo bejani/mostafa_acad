@@ -12,13 +12,17 @@ class StudentPanelAction
     {
         // گرفتن اطلاعات کاربر
         $user = Auth::user();
+        if (!Auth::isStudent()) {
+            View::redirect('/login');
+        }
 
         // گرفتن محتواهای منتشر شده
-        $repo = new ContentRepository();
-        $contents = $repo->allPublished();
+        // $repo = new ContentRepository();
+        // $contents = $repo->allPublished();
+        $contents = '';
 
         // رندر صفحه
-        return View::render('student/panel.php', [
+        return View::render('student/dashboard.php', [
             'user' => $user,
             'contents' => $contents
         ], 'student');

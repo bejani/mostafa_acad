@@ -46,7 +46,7 @@ class AttemptRepository
     }
 
     /**
-     * ذخیره پاسخ هنرجو
+     * ذخیره پاسخ دانش آموز
      */
     public function saveAnswer($attemptId, $questionId, $answerText, $selectedOptionJson, $isCorrect)
     {
@@ -84,7 +84,7 @@ class AttemptRepository
      */
     public function getAnswersWithDetails($attemptId)
     {
-        // فقط سؤالاتی که هنرجو جواب داده
+        // فقط سؤالاتی که دانش آموز جواب داده
         $sql = "
             SELECT 
                 aa.id AS aa_id,
@@ -122,7 +122,7 @@ class AttemptRepository
     }
 
     /**
-     * لیست همه تلاش‌های یک هنرجو
+     * لیست همه تلاش‌های یک دانش آموز
      */
     public function getUserAttempts($userId)
     {
@@ -140,7 +140,7 @@ class AttemptRepository
     }
 
     /**
-     * لیست آزمون‌هایی که هنرجو در آنها امتحان داده
+     * لیست آزمون‌هایی که دانش آموز در آنها امتحان داده
      */
     public function getUserQuizList($userId)
     {
@@ -159,7 +159,7 @@ class AttemptRepository
     }
 
     /**
-     * تمام تلاش‌های یک هنرجو برای یک آزمون خاص
+     * تمام تلاش‌های یک دانش آموز برای یک آزمون خاص
      */
     public function getAttemptsForQuiz($userId, $quizId)
     {
@@ -211,7 +211,17 @@ class AttemptRepository
             u.id AS user_id,
             u.name AS student_name,
             COUNT(a.id) AS attempts_count,
-            MAX(a.started_at) AS last_time
+            MAX(a.started_at) AS last_time,
+            MAX(a.score) AS best_score,
+            AVG(a.score) AS avg_score,
+            (
+                SELECT a2.score
+                FROM attempts a2
+                WHERE a2.quiz_id = q.id
+                  AND a2.user_id = u.id
+                ORDER BY a2.started_at DESC, a2.id DESC
+                LIMIT 1
+            ) AS last_score
         FROM quizzes q
         JOIN attempts a ON a.quiz_id = q.id
         JOIN users u ON u.id = a.user_id
@@ -222,6 +232,45 @@ class AttemptRepository
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$teacherId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Summary filtered by subject list (for teachers assigned to subjects).
+     */
+    public function teacherResultsBySubjects(array $subjectIds): array
+    {
+        if (empty($subjectIds)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($subjectIds), '?'));
+        $sql = "
+        SELECT 
+            q.id AS quiz_id,
+            q.title AS quiz_title,
+            u.id AS user_id,
+            u.name AS student_name,
+            COUNT(a.id) AS attempts_count,
+            MAX(a.started_at) AS last_time,
+            MAX(a.score) AS best_score,
+            AVG(a.score) AS avg_score,
+            (
+                SELECT a2.score
+                FROM attempts a2
+                WHERE a2.quiz_id = q.id
+                  AND a2.user_id = u.id
+                ORDER BY a2.started_at DESC, a2.id DESC
+                LIMIT 1
+            ) AS last_score
+        FROM attempts a
+        JOIN quizzes q ON q.id = a.quiz_id
+        JOIN users u ON u.id = a.user_id
+        WHERE q.subject_id IN ($placeholders)
+        GROUP BY q.id, u.id
+        ORDER BY last_time DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($subjectIds);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -237,6 +286,39 @@ class AttemptRepository
         ORDER BY id DESC
     ");
         $stmt->execute([$quizId, $userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Summary of all results (quiz, student, attempt count, last time) without teacher filtering.
+     */
+    public function allResultsSummary(): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT 
+                q.id   AS quiz_id,
+                q.title AS quiz_title,
+                u.id   AS user_id,
+                u.name AS student_name,
+                COUNT(a.id) AS attempts_count,
+                MAX(a.started_at) AS last_time,
+                MAX(a.score) AS best_score,
+                AVG(a.score) AS avg_score,
+                (
+                    SELECT a2.score
+                    FROM attempts a2
+                    WHERE a2.quiz_id = q.id
+                      AND a2.user_id = u.id
+                    ORDER BY a2.started_at DESC, a2.id DESC
+                    LIMIT 1
+                ) AS last_score
+            FROM attempts a
+            JOIN quizzes q ON q.id = a.quiz_id
+            JOIN users u   ON u.id = a.user_id
+            GROUP BY q.id, u.id
+            ORDER BY last_time DESC
+        ");
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

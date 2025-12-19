@@ -5,6 +5,7 @@ namespace App\Action\Admin\User;
 use App\Core\View;
 use App\Core\Auth;
 use App\Domain\UserRepository;
+use App\Domain\UserSubjectRepository;
 
 class UserEditAction
 {
@@ -17,6 +18,12 @@ class UserEditAction
         $username = $_POST['username'];
         $role     = $_POST['role'];
         $is_active = $_POST['is_active'];
+        $subjects = $_POST['subjects'] ?? [];
+
+        // اگر نقش teacher نیست، درس‌ها را خالی کنیم
+        if ($role !== 'teacher') {
+            $subjects = [];
+        }
 
         $repo = new UserRepository();
 
@@ -33,6 +40,10 @@ class UserEditAction
             $hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
             $repo->updatePassword($id, $hash);
         }
+
+        // آپدیت درس‌ها
+        $userSubjectRepo = new UserSubjectRepository();
+        $userSubjectRepo->sync($id, $subjects);
 
         View::redirect("/admin/users");
     }

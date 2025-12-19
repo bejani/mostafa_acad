@@ -7,6 +7,7 @@ use App\Core\View;
 use App\Domain\QuizRepository;
 use App\Domain\AttemptRepository;
 use App\Domain\QuestionRepository;
+use App\Domain\UserSubjectRepository;
 
 class QuizTakeAction
 {
@@ -18,7 +19,10 @@ class QuizTakeAction
 
         $quizId = $_GET['id'] ?? null;
         if (!$quizId) {
-            die("Invalid quiz.");
+            return View::render('error.php', [
+                'title' => 'آزمون نامعتبر',
+                'message' => 'شناسه آزمون مشخص نشده است.'
+            ], 'student');
         }
 
         $quizRepo      = new QuizRepository();
@@ -27,10 +31,35 @@ class QuizTakeAction
 
         $quiz = $quizRepo->find($quizId);
         if (!$quiz) {
-            die("Quiz not found.");
+            return View::render('error.php', [
+                'title' => 'آزمون یافت نشد',
+                'message' => 'آزمون مورد نظر وجود ندارد یا حذف شده است.'
+            ], 'student');
         }
 
         $userId = Auth::id();
+
+        // ensure quiz subject is allowed for this student
+        $subjectIds = (new UserSubjectRepository())->subjectsForUser((int)$userId);
+        if (!in_array((int)$quiz['subject_id'], $subjectIds, true)) {
+            return View::render('error.php', [
+                'title' => 'دسترسی غیرمجاز',
+                'message' => 'شما اجازه دسترسی به این آزمون را ندارید.'
+            ], 'student');
+        }
+
+        // چک کردن تعداد attempts قبلی
+        $previousAttempts = $attemptRepo->getAttemptsForQuiz($userId, $quizId);
+        $attemptCount = count($previousAttempts);
+
+        // چک کردن حداکثر تعداد attempts مجاز
+        $maxAttempts = (int)($quiz['max_attempts'] ?? 1);
+        if ($attemptCount >= $maxAttempts) {
+            return View::render('error.php', [
+                'title' => 'محدودیت تعداد دفعات',
+                'message' => "شما حداکثر {$maxAttempts} بار می‌توانید این آزمون را بدهید. تعداد دفعات فعلی شما: {$attemptCount}"
+            ], 'student');
+        }
 
         // تعداد سؤالات مجاز
         $limit = (int)$quiz['question_count'];
@@ -39,7 +68,10 @@ class QuizTakeAction
         // گرفتن سوالات تصادفی
         $randomQuestions = $questionRepo->randomByQuiz($quizId, $limit);
         if (!$randomQuestions) {
-            die("No questions found in this quiz.");
+            return View::render('error.php', [
+                'title' => 'سوال یافت نشد',
+                'message' => 'این آزمون هنوز سوالی ندارد. لطفاً با معلم خود تماس بگیرید.'
+            ], 'student');
         }
 
         // استخراج IDها به ترتیب

@@ -5,6 +5,7 @@ namespace App\Action\Teacher\Results;
 use App\Core\View;
 use App\Core\Auth;
 use App\Domain\AttemptRepository;
+use App\Domain\UserSubjectRepository;
 
 class TeacherResultListAction
 {
@@ -15,11 +16,11 @@ class TeacherResultListAction
         }
 
         $attemptRepo = new AttemptRepository();
-        $teacherId   = (int) Auth::user()['id'];
+        $subjects = (new UserSubjectRepository())->subjectsForUser((int)Auth::id());
 
         return View::render('teacher/results/index.php', [
             'user' => Auth::user(),
-            'rows' => $attemptRepo->teacherResultsSummary($teacherId),
-        ]);
+            'rows' => $attemptRepo->teacherResultsBySubjects($subjects),
+        ], 'teacher');
     }
 }

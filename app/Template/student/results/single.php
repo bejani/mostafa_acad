@@ -29,7 +29,7 @@ $answers = array_values($answers ?? []);
             <span>تلاش‌های این آزمون</span>
         </a>
 
-        <!-- نتایج کلی هنرجو -->
+        <!-- نتایج کلی دانش آموز -->
         <a href="<?= \App\Core\View::baseUrl('/student/results') ?>"
             class="btn btn-dark d-flex align-items-center gap-1">
             <span>📊</span>
@@ -98,36 +98,36 @@ $answers = array_values($answers ?? []);
     </div>
 
     <?php if (empty($answers)): ?>
-    <div class="alert alert-info">
-        برای این تلاش هیچ پاسخی ثبت نشده است.
-    </div>
+        <div class="alert alert-info">
+            برای این تلاش هیچ پاسخی ثبت نشده است.
+        </div>
     <?php else: ?>
 
-    <?php
+        <?php
         $qNum = 1;
         foreach ($answers as $a):
             $selectedIds = json_decode($a['selected_option_ids'], true) ?: [];
             $selectedId  = $selectedIds[0] ?? null;
         ?>
-    <div class="card mb-3 shadow-sm">
-        <div class="card-body">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
 
-            <h5 class="card-title mb-2">
-                <?= $qNum ?>) <?= htmlspecialchars($a['question_text']) ?>
-                <small class="text-muted">
-                    (ID: <?= (int)$a['question_id'] ?>)
-                </small>
-            </h5>
+                    <h5 class="card-title mb-2">
+                        <?= $qNum ?>) <?= htmlspecialchars($a['question_text']) ?>
+                        <small class="text-muted">
+                            (ID: <?= (int)$a['question_id'] ?>)
+                        </small>
+                    </h5>
 
-            <?php if (!empty($a['explanation'])): ?>
-            <p class="text-muted small mb-2">
-                <?= nl2br(htmlspecialchars($a['explanation'])) ?>
-            </p>
-            <?php endif; ?>
+                    <?php if (!empty($a['explanation'])): ?>
+                        <p class="text-muted small mb-2">
+                            <?= nl2br(htmlspecialchars($a['explanation'])) ?>
+                        </p>
+                    <?php endif; ?>
 
-            <ul class="list-group mb-2">
-                <?php foreach ($a['options'] as $op): ?>
-                <?php
+                    <ul class="list-group mb-2">
+                        <?php foreach ($a['options'] as $op): ?>
+                            <?php
                             $isCorrectOption = (int)$op['is_correct'] === 1;
                             $isSelected      = ($selectedId !== null && (int)$selectedId === (int)$op['id']);
 
@@ -139,44 +139,44 @@ $answers = array_values($answers ?? []);
                                 $liClass .= ' list-group-item-danger';
                             }
                             ?>
-                <li class="<?= $liClass ?>">
-                    <span><?= htmlspecialchars($op['body']) ?></span>
-                    <span class="badge bg-light text-dark border">
-                        <?php if ($isCorrectOption): ?>
-                        ✔ گزینه صحیح
-                        <?php endif; ?>
-                        <?php if ($isSelected && !$isCorrectOption): ?>
-                        ✘ انتخاب شما
-                        <?php elseif ($isSelected && $isCorrectOption): ?>
-                        ✔ انتخاب شما
-                        <?php endif; ?>
-                    </span>
-                </li>
-                <?php endforeach; ?>
-            </ul>
+                            <li class="<?= $liClass ?>">
+                                <span><?= htmlspecialchars($op['body']) ?></span>
+                                <span class="badge bg-light text-dark border">
+                                    <?php if ($isCorrectOption): ?>
+                                        ✔ گزینه صحیح
+                                    <?php endif; ?>
+                                    <?php if ($isSelected && !$isCorrectOption): ?>
+                                        ✘ انتخاب شما
+                                    <?php elseif ($isSelected && $isCorrectOption): ?>
+                                        ✔ انتخاب شما
+                                    <?php endif; ?>
+                                </span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
 
-            <?php if ($selectedId === null): ?>
-            <p class="text-muted small mb-0">
-                — این سؤال بدون پاسخ رها شده است.
-            </p>
-            <?php endif; ?>
+                    <?php if ($selectedId === null): ?>
+                        <p class="text-muted small mb-0">
+                            — این سؤال بدون پاسخ رها شده است.
+                        </p>
+                    <?php endif; ?>
 
-        </div>
-    </div>
-    <?php
+                </div>
+            </div>
+        <?php
             $qNum++;
         endforeach;
         ?>
 
-    <div class="mt-3 d-flex justify-content-between">
-        <a href="<?= \App\Core\View::baseUrl('/student/results/quiz?quiz_id=' . (int)$attempt['quiz_id']) ?>"
-            class="btn btn-outline-secondary">
-            ← بازگشت به لیست تلاش‌های این آزمون
-        </a>
-        <a href="<?= \App\Core\View::baseUrl('/student/results') ?>" class="btn btn-outline-primary">
-            ← بازگشت به لیست آزمون‌ها
-        </a>
-    </div>
+        <div class="mt-3 d-flex justify-content-between">
+            <a href="<?= \App\Core\View::baseUrl('/student/results/quiz?quiz_id=' . (int)$attempt['quiz_id']) ?>"
+                class="btn btn-outline-secondary">
+                ← بازگشت به لیست تلاش‌های این آزمون
+            </a>
+            <a href="<?= \App\Core\View::baseUrl('/student/results') ?>" class="btn btn-outline-primary">
+                ← بازگشت به لیست آزمون‌ها
+            </a>
+        </div>
 
     <?php endif; ?>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action\Teacher\Quiz;
+namespace App\Action\Teacher\Quizzes;
 
 use App\Domain\SubjectRepository;
 use App\Core\Auth;
@@ -15,7 +15,14 @@ class QuizCreateFormAction
         }
 
         $subjectRepo = new SubjectRepository();
-        $subjects    = $subjectRepo->all();
+        $allSubjects = $subjectRepo->all();
+
+        // فقط دروس منتسب به معلم
+        $userSubjectRepo = new \App\Domain\UserSubjectRepository();
+        $teacherSubjectIds = $userSubjectRepo->subjectsForUser((int)Auth::id());
+        $subjects = array_filter($allSubjects, function ($sub) use ($teacherSubjectIds) {
+            return in_array($sub['id'], $teacherSubjectIds);
+        });
 
         // ماژول‌های فعلی مطابق enum دیتابیس
         $modules = [

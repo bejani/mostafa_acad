@@ -22,6 +22,7 @@
                     <th>نام</th>
                     <th>نام کاربری</th>
                     <th>نقش</th>
+                    <th>درس‌ها</th>
                     <th>وضعیت</th>
                     <th>عملیات</th>
                 </tr>
@@ -36,12 +37,18 @@
                         echo match ($u['role']) {
                             'admin'   => 'مدیر',
                             'teacher' => 'مربی',
-                            'student' => 'هنرجو',
+                            'student' => 'دانش آموز',
                             default   => 'نامشخص',
                         };
                         ?>
                     </td>
-
+                    <td>
+                        <?php if (!empty($u['subjects'])): ?>
+                            <?= implode(', ', $u['subjects']) ?>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
                     <td>
                         <?= $u['is_active'] ? 'فعال' : 'غیرفعال' ?>
                     </td>

@@ -19,11 +19,10 @@
     <div class="col-md-4">
         <div class="card text-center">
             <div class="card-body">
-                <h5 class="card-title">نتایج فراگیران</h5>
-                <a href="<?= \App\Core\View::baseUrl('teacher/results') ?>" class="btn btn-success btn-sm">
-                    مشاهده نتایج
+                <h5 class="card-title">دانش آموزان من</h5>
+                <a href="<?= \App\Core\View::baseUrl('teacher/students') ?>" class="btn btn-info btn-sm">
+                    مشاهده دانش آموزان
                 </a>
             </div>
         </div>
     </div>
-</div>

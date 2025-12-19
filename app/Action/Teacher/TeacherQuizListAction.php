@@ -6,6 +6,7 @@ use App\Core\View;
 use App\Core\Auth;
 use PDO;
 use App\Domain\QuizRepository;
+use App\Domain\UserSubjectRepository;
 
 class TeacherQuizListAction
 {
@@ -17,10 +18,8 @@ class TeacherQuizListAction
 
 
         $quizRepo  = new QuizRepository();
-        $teacherId =  (int) Auth::user()['id'];
-
-
-        $quizzes = $quizRepo->findByCreator($teacherId);
+        $subjectIds = (new UserSubjectRepository())->subjectsForUser((int)Auth::id());
+        $quizzes = $quizRepo->findBySubjectIds($subjectIds);
 
         return View::render('teacher/quizzes.php', [
             'user'    => Auth::user(),

@@ -5,6 +5,7 @@ namespace App\Action\Student;
 use App\Core\Auth;
 use App\Core\View;
 use App\Domain\QuizRepository;
+use App\Domain\UserSubjectRepository;
 
 class QuizListAction
 {
@@ -15,7 +16,8 @@ class QuizListAction
         }
 
         $repo = new QuizRepository();
-        $quizzes = $repo->allPublished();
+        $subjectIds = (new UserSubjectRepository())->subjectsForUser((int)Auth::id());
+        $quizzes = $repo->allPublishedBySubjects($subjectIds);
 
         return View::render('student/quizzes/list.php', [
             'quizzes' => $quizzes,

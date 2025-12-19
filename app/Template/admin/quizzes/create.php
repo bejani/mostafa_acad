@@ -57,7 +57,7 @@
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" name="is_published" id="is_published" checked>
                 <label class="form-check-label" for="is_published">
-                    انتشار آزمون (قابل مشاهده برای هنرجوها)
+                    انتشار آزمون (قابل مشاهده برای دانش آموزان)
                 </label>
             </div>
 

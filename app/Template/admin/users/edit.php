@@ -35,8 +35,20 @@
             <div class="mb-3">
                 <label class="form-label">نقش</label>
                 <select name="role" class="form-select">
-                    <option value="student" <?= $user['role'] == 'student' ? 'selected' : '' ?>>هنرجو</option>
+                    <option value="student" <?= $user['role'] == 'student' ? 'selected' : '' ?>>دانش آموز</option>
+                    <option value="teacher" <?= $user['role'] == 'teacher' ? 'selected' : '' ?>>مربی</option>
                     <option value="admin" <?= $user['role'] == 'admin' ? 'selected' : '' ?>>مدیر</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">درس‌ها (فقط برای نقش مربی)</label>
+                <select name="subjects[]" class="form-select" multiple>
+                    <?php foreach ($subjects as $subject): ?>
+                        <option value="<?= $subject['id'] ?>" <?= in_array($subject['id'], $userSubjectIds) ? 'selected' : '' ?>>
+                            <?= $subject['title'] ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
