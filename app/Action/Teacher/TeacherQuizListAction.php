@@ -25,6 +25,6 @@ class TeacherQuizListAction
         return View::render('teacher/quizzes.php', [
             'user'    => Auth::user(),
             'quizzes' => $quizzes
-        ]);
+        ], 'teacher');
     }
 }

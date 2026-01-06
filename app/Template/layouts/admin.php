@@ -67,19 +67,20 @@ $u = Auth::user();
 
 <body>
 
-    <!-- 🔷 هدر مشترک پنل مدیریت -->
+    <!-- ñ??ú â?á?á? â?á?á?á?ã? â?â?â? â?á?ä?á?ä?á? -->
     <div class="top-menu d-flex justify-content-between align-items-center text-white">
 
         <div class="d-flex align-items-center">
-            <a href="<?= View::baseUrl('/admin/dashboard') ?>" class="btn btn-sm btn-info me-3">🏠 داشبورد</a>
-            <strong style="font-size: 18px;">🌐 پنل مدیریت</strong>
+            <a href="<?= View::baseUrl('/admin/dashboard') ?>" class="btn btn-sm btn-info me-3">بازگشت به سایت</a>
+            <strong style="font-size: 18px;">پنل مدیریت</strong>
         </div>
 
         <div class="d-flex align-items-center">
-            <a href="<?= View::baseUrl('/admin/subjects') ?>">مدیریت درسها</a>
-            <a href="<?= View::baseUrl('/admin/quizzes') ?>">مدیریت آزمون‌ها</a>
-            <a href="<?= View::baseUrl('/admin/users') ?>">مدیریت کاربران</a>
-            <a href="<?= View::baseUrl('/admin/backup') ?>">بک‌آپ</a>
+            <a href="<?= View::baseUrl('/admin/subjects') ?>">دروس</a>
+            <a href="<?= View::baseUrl('/admin/quizzes') ?>">آزمون‌ها</a>
+            <a href="<?= View::baseUrl('/admin/results') ?>">نتایج</a>
+            <a href="<?= View::baseUrl('/admin/users') ?>">کاربران</a>
+            <a href="<?= View::baseUrl('/admin/backup') ?>">پشتیبان‌گیری</a>
 
 
             <span class="ms-3 text-warning fw-bold">
@@ -92,7 +93,7 @@ $u = Auth::user();
     </div>
 
 
-    <!-- 📌 محتوای صفحه‌ها -->
+    <!-- ñ??? â?á?á?â?á?ä? áæâ?á?â?ƒ??â?á? -->
     <div class="container admin-content">
         <?= $content ?>
     </div>

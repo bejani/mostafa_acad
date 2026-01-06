@@ -15,6 +15,6 @@ class TeacherDashboardAction
 
         return View::render('teacher/dashboard.php', [
             'user' => Auth::user()
-        ]);
+        ], 'teacher');
     }
 }

@@ -111,4 +111,18 @@ class QuizRepository
         $stmt->execute([$quizId, $teacherId]);
         return (bool)$stmt->fetchColumn();
     }
+
+    public function getMaxAttempts(int $quizId): int
+    {
+        $stmt = $this->db->prepare("SELECT max_attempts FROM quizzes WHERE id = ? LIMIT 1");
+        $stmt->execute([$quizId]);
+        $v = $stmt->fetchColumn();
+        return $v ? (int)$v : 1;
+    }
+
+    public function setMaxAttempts(int $quizId, int $n): bool
+    {
+        $stmt = $this->db->prepare("UPDATE quizzes SET max_attempts = ? WHERE id = ?");
+        return (bool)$stmt->execute([$n, $quizId]);
+    }
 }

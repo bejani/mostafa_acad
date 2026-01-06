@@ -9,10 +9,10 @@ return [
         'charset' => 'utf8mb4'
     ],
     // 'db' => [
-    //     'host' => 'sql113.infinityfree.com',
-    //     'dbname' => 'if0_40388701_drtvto',
-    //     'user' => 'if0_40388701',
-    //     'pass' => 'qbXxne38Tl',
+    //     'host' => 'sql100.infinityfree.com',
+    //     'dbname' => 'if0_40743283_acad',
+    //     'user' => 'if0_40743283',
+    //     'pass' => 'tLL9MNUA9q',
     //     'charset' => 'utf8mb4'
     // ],
     'base_url' => 'http://localhost/mostafa_acad/public'

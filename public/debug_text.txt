@@ -1,0 +1,106 @@
+برای برجسته کردن
+ (Bold) 
+متن انتخاب‌شده از کدام کلید ترکیبی استفاده می‌شود؟
+الف
+) Ctrl + U
+ب
+) Ctrl + I
+ج
+) Ctrl + B
+د
+) Ctrl + L
+پاسخ: ج
+برای تغییر اندازهٔ قلم باید از کدام برگه
+ (Tab) 
+استفاده کرد؟
+الف
+) View
+ب
+) Layout
+ج
+) Home
+د
+) Insert
+پاسخ: ج
+برای شماره‌گذاری فهرست موارد از کدام بخش استفاده می‌شود؟
+الف
+) Layout → Numbering
+ب
+) Home → Paragraph → Numbering
+ج
+) Insert → Page Number
+د
+) References → Index
+پاسخ: ب
+برای تنظیم متن در وسط صفحه از کدام گزینه استفاده می‌شود؟
+الف
+) Align Left
+ب
+) Align Right
+ج
+) Center
+د
+) Justify
+پاسخ: ج
+برای افزودن شماره صفحه به سند از کدام مسیر استفاده می‌شود؟
+الف
+) Layout → Page Setup
+ب
+) Insert → Page Number
+ج
+) View → Header &amp; Footer
+د
+) Home → Numbering
+پاسخ: ب
+برای درج جدول در سند باید از کدام گزینه استفاده کرد؟
+الف
+) Insert → Table
+ب
+) Layout → Grid
+ج
+) Home → Insert Table
+د
+) View → Table Design
+پاسخ: الف
+برای ایجاد دو ستون در یک صفحه از کدام قسمت استفاده می‌شود؟
+الف
+) Home → Paragraph
+ب
+) Layout → Columns
+ج
+) Insert → Section
+د
+) View → Split
+پاسخ: ب
+برای ذخیره فایل با نام جدید از کدام گزینه استفاده می‌شود؟
+الف
+) Save
+ب
+) Save All
+ج
+) Save As
+د
+) Export
+پاسخ: ج
+برای درج پاورقی
+ (Footnote) 
+از کدام مسیر استفاده می‌شود؟
+الف
+) Insert → Footer
+ب
+) Review → New Comment
+ج
+) References → Insert Footnote
+د
+) Layout → Page Setup
+پاسخ: ج
+برای بررسی املای کلمات از کدام گزینه استفاده می‌شود؟
+الف
+) Review → Spelling &amp; Grammar
+ب
+) Home → Proofing
+ج
+) View → Language
+د
+) Insert → Dictionary
+پاسخ: الف

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action\Teacher\Quiz;
+namespace App\Action\Teacher\Quizzes;
 
 use App\Core\Auth;
 use App\Core\View;

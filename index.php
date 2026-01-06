@@ -1,3 +1,3 @@
 <?php
-header("Location: https://talash.page.gd/mostafa_acad/public");
+header("Location: https://fanni.page.gd/public");
 exit;

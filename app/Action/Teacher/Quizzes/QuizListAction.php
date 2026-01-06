@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action\Teacher\Quiz;
+namespace App\Action\Teacher\Quizzes;
 
 use App\Core\Auth;
 use App\Core\View;
@@ -25,7 +25,7 @@ class QuizListAction
         }
         unset($q);
 
-        return View::render('teacher/quizzes/list.php', [
+        return View::render('teacher/quizzes.php', [
             'quizzes' => $quizzes
         ]);
     }

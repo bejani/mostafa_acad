@@ -84,7 +84,7 @@
         <!-- لینک‌ها -->
         <div class="d-flex align-items-center">
 
-            <a href="index.php?route=/student/panel">داشبورد</a>
+            <a href="<?= \App\Core\View::baseUrl('/student/dashboard') ?>">داشبورد</a>
             <a href="index.php?route=/student/contents">محتواها</a>
             <a href="index.php?route=/student/quizzes">آزمون‌ها</a>
             <a href="index.php?route=/student/results">نتایج</a>

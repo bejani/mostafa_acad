@@ -239,4 +239,28 @@ class AttemptRepository
         $stmt->execute([$quizId, $userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function adminResults(): array
+    {
+        $sql = "
+            SELECT 
+                a.id AS attempt_id,
+                a.quiz_id,
+                a.user_id,
+                a.score,
+                a.started_at,
+                a.finished_at,
+                a.duration_seconds,
+                q.title AS quiz_title,
+                u.name AS student_name,
+                u.username AS student_username
+            FROM attempts a
+            JOIN quizzes q ON q.id = a.quiz_id
+            JOIN users u   ON u.id = a.user_id
+            ORDER BY a.id DESC
+        ";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

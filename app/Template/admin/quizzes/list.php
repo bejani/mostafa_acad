@@ -54,6 +54,18 @@
                             حذف
                         </a>
 
+                        <!-- تکرار آزمون: نمایش تعداد و دکمه‌های + / - -->
+                        <?php $ma = (int)($q['max_attempts'] ?? $q['max_attemts'] ?? 1); ?>
+                        <div class="d-inline-flex align-items-center">
+                            <a href="index.php?route=/admin/quizzes/attempts/change&quiz_id=<?= $q['id'] ?>&op=dec" class="btn btn-sm btn-outline-danger me-1" title="کاهش">
+                                -
+                            </a>
+                            <span class="px-2">تعداد تکرار: <strong><?= $ma ?></strong></span>
+                            <a href="index.php?route=/admin/quizzes/attempts/change&quiz_id=<?= $q['id'] ?>&op=inc" class="btn btn-sm btn-outline-success ms-1" title="افزایش">
+                                +
+                            </a>
+                        </div>
+
                     </td>
                 </tr>
             <?php endforeach; ?>

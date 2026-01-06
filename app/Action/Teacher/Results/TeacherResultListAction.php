@@ -17,9 +17,10 @@ class TeacherResultListAction
         $attemptRepo = new AttemptRepository();
         $teacherId   = (int) Auth::user()['id'];
 
-        return View::render('teacher/results/index.php', [
+        // Reuse the admin results table template but render within the teacher layout
+        return View::render('admin/results/list.php', [
             'user' => Auth::user(),
             'rows' => $attemptRepo->teacherResultsSummary($teacherId),
-        ]);
+        ], 'teacher');
     }
 }

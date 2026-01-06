@@ -5,6 +5,11 @@ namespace App\Core;
 class View
 {
     /**
+     * If set, this layout will be forced for all renders (useful for route-based overrides)
+     * @var string|null
+     */
+    public static ?string $forceLayout = null;
+    /**
      * رندر صفحه با لی‌اوت
      */
     public static function render(string $template, array $data = [], ?string $layout = 'admin')
@@ -18,9 +23,25 @@ class View
 
         extract($data);
 
+        // Ensure UTF-8 headers and internal encoding so templates render Persian correctly
+        if (!headers_sent()) {
+            header('Content-Type: text/html; charset=utf-8');
+        }
+        if (function_exists('mb_internal_encoding')) {
+            mb_internal_encoding('UTF-8');
+        }
+        if (function_exists('mb_http_output')) {
+            mb_http_output('UTF-8');
+        }
+
         ob_start();
         require $templateFile;
         $content = ob_get_clean();
+
+        // If a global forceLayout is set (e.g. by public/index.php based on route), use it
+        if (self::$forceLayout !== null) {
+            $layout = self::$forceLayout;
+        }
 
         if ($layout === null) {
             return $content;

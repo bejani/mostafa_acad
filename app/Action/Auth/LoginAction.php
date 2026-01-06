@@ -14,7 +14,7 @@ class LoginAction
                 return View::redirect('/admin/dashboard');
             }
             if (Auth::isStudent()) {
-                return View::redirect('/student/panel');
+                return View::redirect('/student/dashboard');
             }
         }
 

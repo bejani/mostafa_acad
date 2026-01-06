@@ -52,7 +52,7 @@ class DoLoginAction
         }
 
         if ($user['role'] === 'student') {
-            return View::redirect('/student/panel');
+            return View::redirect('/student/dashboard');
         }
 
         if ($user['role'] === 'teacher') {

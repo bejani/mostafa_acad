@@ -19,10 +19,19 @@ class Database
             return; // اگر قبلاً وصل شده، دوباره وصل نشود
         }
 
+        //local
         $host    = $config['host'] ?? 'localhost';
         $dbname  = $config['dbname'] ?? 'mostafadb';
         $user    = $config['user'] ?? 'root';
         $pass    = $config['pass'] ?? '4562';
+
+        //server
+        // $host    = $config['host'] ?? 'sql100.infinityfree.com';
+        // $dbname  = $config['dbname'] ?? 'if0_40743283_acad';
+        // $user    = $config['user'] ?? 'if0_40743283';
+        // $pass    = $config['pass'] ?? 'tLL9MNUA9q';
+
+
         $charset = $config['charset'] ?? 'utf8mb4';
 
 
